@@ -10,14 +10,16 @@ def input_error(inner):
     return wrap
 
 
-def add_handler(data):   
+@input_error
+def add_handler(data):
     name = data[0].title()
     phone = data[1]
     ADDRESSBOOK[name] = phone
     return f"Contact {name} with phone {phone} was saved"
 
 
-def change_handler(data):   
+@input_error
+def change_handler(data):
     name = data[0].title()
     phone = data[1]
     if name in ADDRESSBOOK:
@@ -27,7 +29,8 @@ def change_handler(data):
         return f"Contact {name} does not exist"
 
 
-def phone_handler(data):  
+@input_error
+def phone_handler(data):
     name = data[0].title()
     if name in ADDRESSBOOK:
         return f"{name}'s phone number is {ADDRESSBOOK[name]}"
@@ -43,7 +46,7 @@ def hello_handler(*args):
     return "How can I help you?"
 
 
-def show_all_handler(*args):   
+def show_all_handler(*args):
     if ADDRESSBOOK:
         contacts = "\n".join(f"{name}: {phone}" for name, phone in ADDRESSBOOK.items())
         return contacts
@@ -51,7 +54,7 @@ def show_all_handler(*args):
         return "No contacts found."
 
 
-def command_parser(raw_str: str):  
+def command_parser(raw_str: str):
     elements = raw_str.split()
     command = elements[0].lower()
     for handler, aliases in COMMANDS.items():
@@ -70,7 +73,7 @@ COMMANDS = {
 }
 
 
-def main():   
+def main():
     while True:
         user_input = input(">>> ")
         result = command_parser(user_input)
