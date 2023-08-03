@@ -43,7 +43,7 @@ def hello_handler(*args):
     return "How can I help you?"
 
 
-def show_all_handler():   
+def show_all_handler(*args):   
     if ADDRESSBOOK:
         contacts = "\n".join(f"{name}: {phone}" for name, phone in ADDRESSBOOK.items())
         return contacts
@@ -55,9 +55,9 @@ def command_parser(raw_str: str):
     elements = raw_str.split()
     command = elements[0].lower()
     for handler, aliases in COMMANDS.items():
-        if command in aliases:
-            return handler(elements[1:])
-    return "Unknown command"
+        for cmd in aliases:
+            if cmd.startswith(command):
+                return handler(elements[1:])
 
 
 COMMANDS = {
